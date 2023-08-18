@@ -1,0 +1,59 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
+
+public class Calculadora {
+
+	
+	public static void main(String[] args) {
+		
+		NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
+		
+		//double valor = 18929;
+		//double valor = 20150;
+		double valor = 24000;
+		//1,5  % IRPJ
+		double irpj = 1.5 ;
+		//3,0% COFINS
+		double cofins =3.0 ;
+		//0,65% PIS
+		double pis = 0.65 ;
+		//1,0% CSLL
+		double csll = 1 ;
+		//2,0  % ISS
+		double iss = 2 ;		
+		System.out.println("==========================================");		
+		System.out.println(" VALOR BRUTO =  "+numberFormat.format(valor));
+		System.out.println("==========================================");
+		System.out.println(" 		RETIDO NA FPNTE  ");
+		System.out.println("==========================================");		
+		double cIRPJ =  Calculadora.valorPercentual(irpj, valor);
+	    System.out.println(" 1,5  % IRPJ   = "+numberFormat.format(cIRPJ));				
+		double cCOFINS =Calculadora.valorPercentual(cofins, valor);
+	    System.out.println(" 3,0  % COFINS = "+numberFormat.format(cCOFINS) );
+		double cPIS = Calculadora.valorPercentual(pis, valor);
+		System.out.println(" 0,65 % PIS    = "+numberFormat.format(cPIS));		
+		double cCSLL = Calculadora.valorPercentual(csll, valor);
+		System.out.println(" 1,0  % CSLL   = "+numberFormat.format(cCSLL));
+		System.out.println("==========================================");
+		System.out.println(" 	PREFEITURA ISS");
+		System.out.println("==========================================");
+		double cISS = Calculadora.valorPercentual(iss, valor);
+		System.out.println(" 2,0  % ISS    = "+ numberFormat.format(cISS));
+		System.out.println("==========================================");
+		System.out.println(" 	VALOR - INPOSTOS RETIDO NA FONTE ");
+		System.out.println("==========================================");
+		System.out.println("Valor 	= "+numberFormat.format(new BigDecimal(valor - cIRPJ - cCOFINS - cCSLL - cPIS).setScale(2, RoundingMode.DOWN).doubleValue()));
+		System.out.println("==========================================");
+		System.out.println(" 	VALOR LIQUIDO REAL ");
+		System.out.println("==========================================");
+		System.out.println("Valor 	= "+numberFormat.format(new BigDecimal(valor - cIRPJ - cCOFINS - cCSLL - cPIS- cISS).setScale(2, RoundingMode.DOWN).doubleValue()));
+		System.out.println("==========================================");
+	}
+	
+	 public static double valorPercentual(final double percentual, final double valor) {
+	        final BigDecimal eita = new BigDecimal(percentual);
+	        final BigDecimal perCalculado = eita.divide(new BigDecimal(100));
+	        return perCalculado.multiply(new BigDecimal(valor)).setScale(2, RoundingMode.DOWN).doubleValue();
+	    }
+}
